@@ -20,7 +20,7 @@ jobs:
     - name: OpenCV Cache
       uses: actions/cache@v2
       env:
-        cache-name: OpenCV
+        cache-name: OpenCV-0
       with:
         path: ${{ github.workspace }}/build/OpenCV-prefix
         key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('opencv/modules/core/include/opencv2/core/version.hpp') }}
