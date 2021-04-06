@@ -16,23 +16,17 @@ jobs:
       with:
         submodules: true
 
-    - name: OpenCV Cache
+    - name: Build dir cache
+      id: make-builddir-cache
       uses: actions/cache@v2
       env:
-        cache-name: OpenCV-0
+        cache-name: builddir
       with:
-        path: ${{ github.workspace }}/build/OpenCV-prefix
-        key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('opencv/modules/core/include/opencv2/core/version.hpp') }}
-
-    - name: Artifact Cache
-      uses: actions/cache@v2
-      env:
-        cache-name: artifacts-0
-      with:
-        path: ${{ github.workspace }}/build/install
-        key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('.gitmodules') }}
+        path: ${{ github.workspace }}/build
+        key: ${{ matrix.os }}-build-${{ env.cache-name }}
 
     - name: Create Build Directory
+      if: steps.make-builddir-cache.outputs.cache-hit != 'true'
       run: cmake -E make_directory ${{ github.workspace }}/build
 
     - name: Configure CMake (Single-config)
