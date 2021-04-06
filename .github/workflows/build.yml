@@ -11,6 +11,13 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
+
+    - name: Echo Vars
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        echo ${{ env.VCPKG_INSTALLATION_ROOT }}/installed
+        echo ${{ env.LOCALAPPDATA }}/vcpkg/archives
+
     - name: Checkout Code
       uses: actions/checkout@v2
       with:
