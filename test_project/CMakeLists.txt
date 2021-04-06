@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 project(test_project)
 
+set(OpenCV_DIR ${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv4)
 find_package(OpenCV REQUIRED NO_DEFAULT_PATH HINTS ${CMAKE_INSTALL_PREFIX}/lib/cmake)
 
 add_executable(test test.cpp)
