@@ -41,9 +41,7 @@ jobs:
       working-directory: ${{ github.workspace }}/build
       run: |
         cmake \
-	    # Makefile
             -DCMAKE_BUILD_TYPE="${CONFIGURATION}" \
-	    # MSVC
             -DCMAKE_CONFIGURATION_TYPES="${CONFIGURATION}" \
             ${GITHUB_WORKSPACE}
 
