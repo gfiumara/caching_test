@@ -1,0 +1,60 @@
+name: Build Libraries and CLI
+
+on: [push, pull_request]
+env:
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    name: Build Matrix
+
+    runs-on: [ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: OpenCV Cache
+      uses: actions/cache@v2
+      env:
+        cache-name: OpenCV
+      with:
+        path: ${{ github.workspace }}/build/OpenCV-prefix
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('opencv/modules/core/include/opencv2/core/version.hpp') }}
+
+    - name: Artifact Cache
+      uses: actions/cache@v2
+      env:
+        cache-name: artifacts
+      with:
+        path: ${{ github.workspace }}/build/install
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.gitmodules') }}
+
+    - name: Create Build Directory
+      run: cmake -E make_directory ${{ github.workspace }}/build
+
+    - name: Configure CMake (Single-config Generator)
+      if: ${{ runner.os != 'Windows' }}
+      working-directory: ${{ github.workspace }}/build
+      run: |
+        cmake \
+            -DCMAKE_BUILD_TYPE="${CONFIGURATION}" \
+            ${GITHUB_WORKSPACE}
+
+    - name: Configure CMake (Multi-config Generator)
+      if: ${{ runner.os == 'Windows' }}
+      working-directory: ${{ github.workspace }}\build
+      run: |
+        cmake \
+            -DCMAKE_CONFIGURATION_TYPES="${CONFIGURATION}" \
+            ${GITHUB_WORKSPACE}
+
+    - name: Build (Single-config Generator)
+      if: ${{ runner.os != 'Windows' }}
+      working-directory: ${{ github.workspace }}/build
+      run: cmake --build .
+
+    - name: Build (Multi-config Generator)
+      if: ${{ runner.os == 'Windows' }}
+      working-directory: ${{ github.workspace }}/build
+      run: cmake --build . --config ${CONFIGURATION}
