@@ -64,6 +64,8 @@ if ("${TARGET_PLATFORM}" MATCHES "apple32")
 endif()
 
 ExternalProject_Add(OpenCV
+	# This does not need to be rebuilt
+	UPDATE_COMMAND ""
 	SOURCE_DIR ${PROJECT_SOURCE_DIR}/opencv
 	CMAKE_ARGS
 		${OPENCV_CMAKE_ARGS}
