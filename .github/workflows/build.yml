@@ -26,7 +26,7 @@ jobs:
     - name: Artifact Cache
       uses: actions/cache@v2
       env:
-        cache-name: artifacts
+        cache-name: artifacts-0
       with:
         path: ${{ github.workspace }}/build/install
         key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('.gitmodules') }}
