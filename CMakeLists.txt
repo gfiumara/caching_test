@@ -77,4 +77,4 @@ ExternalProject_Add(test_project
 		${MULTI_CONFIG_ARGS}
 		-DCMAKE_INSTALL_PREFIX=${INSTALL_STAGING_DIR}
 )
-ExternalProject_Add_StepDependencies(test_project OpenCV)
+ExternalProject_Add_StepDependencies(test_project install OpenCV)
